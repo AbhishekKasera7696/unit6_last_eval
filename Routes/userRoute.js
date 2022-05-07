@@ -1,54 +1,81 @@
-
+// const router = require('express').Router();
 const express = require('express');
 const app = express();
-const multer = require('multer')
+const userModel = require('../Models/user')
+const bookModel = require('../Models/book');
+const commentModel = require('../Models/comment');
+
 app.use(express.json());
 
+app.post('/registeration', async(req, res, next) => {
 
-const diskStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, `${__dirname}/public`)
-    },
-    filename: function (req, file, cb) {
-      const ext = file.mimetype.split("/")[1];
-      cb(null, `/public-${file.fieldname}-${Date.now()}.${ext}`);
+    try {
+    
+        let userDetail = req.body;
+        let response = await userModel.insertMany([userDetail]);
+        res.json(response);
+
+    } catch (error) {
+        res.json(error);
     }
-  })
 
-
-
-
- const upload = multer({
-      storage:diskStorage
-  })
-
-
-
-
-
-
-
-app.post('/register', (req, res, next) => {
-    res.send("Register route.")
 });
 
-app.post('/loginuser', (req, res, next) => {
-    res.send("User login route.")
+app.post('/loginuser', async(req, res, next) => {
+    // res.send("User login route.")
+    try {
+    
+        // let email = req.body;
+        let response = await userModel.find({email: req.body});
+        console.log(response);
+        res.json(response);
+
+    } catch (error) {
+        res.json(error);
+    }
+
 });
 
-app.post('/bookCreate', (req, res, next) => {
-    res.send("CreateBook route.")
+app.post('/bookmake', async(req, res, next) => {
+    // res.send("CreateBook route.")
+    try {
+    
+        let bookDetail = req.body;
+        let response = await bookModel.insertMany([bookDetail]);
+        res.json(response);
+
+    } catch (error) {
+        res.json(error);
+    }
 });
 
-app.post('/createComment', (req, res, next) => {
-    res.send("Create comment route.")
+app.post('/CommentCreated', async(req, res, next) => {
+    // res.send("Create comment route.")
+    try {
+    
+        let commentDetail = req.body;
+        let response = await commentModel.insertMany([commentDetail]);
+        res.json(response);
+
+    } catch (error) {
+        res.json(error);
+    }
 });
 
-app.get('/viewPosts', (req, res, next) => {
-    res.send("View posts route.");
+app.get('/Postviews', async(req, res, next) => {
+    // res.send("View posts route.");
+    try {
+    
+        let response = await userModel.find({});
+        res.json(response);
+
+    } catch (error) {
+        res.json(error);
+    }
+
 });
 
-app.post('/saveImage', upload.single('file'),userController.saveImage)
+
 
 
 module.exports = app;

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const user = new mongoose.Schema({
+const comment = new mongoose.Schema({
     "body": {type:String, required:true},
     "timestamps":{type:String, required:true}
 })
 
-module.exports = mongoose.model('publication',publication);
+module.exports = mongoose.model('comment',comment);
